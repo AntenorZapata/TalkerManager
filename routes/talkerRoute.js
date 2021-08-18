@@ -9,6 +9,9 @@ router
   .get(talkerController.getAllTalkers)
   .post(validation, talkerController.createTalker);
 
-router.route('/:id').get(talkerController.getTalker).put(validation, talkerController.updateTalker);
+router.route('/:id')
+.get(talkerController.getTalker)
+.put(validation, talkerController.updateTalker)
+.delete(talkerController.deleteTalker);
 
 module.exports = router;

@@ -42,9 +42,22 @@ const updateTalker = async (req, res) => {
   return res.status(200).json(response);
 };
 
+const deleteTalker = async (req, res) => {
+  const { id } = req.params;
+  const verify = new VerifyCredentials(req, res);
+  const vToken = verify.verifyToken();
+  if (vToken) {
+    const speakers = await speakersUtil.readSpeakers();
+    const newSpeakers = speakers.filter((item) => item.id !== +id);
+    await speakersUtil.writeSpeakers(newSpeakers);
+    return res.status(200).json({ message: 'Pessoa palestrante deletada com sucesso' });
+  }
+};
+
 module.exports = {
   getAllTalkers,
   getTalker,
   createTalker,
   updateTalker,
+  deleteTalker,
 };
