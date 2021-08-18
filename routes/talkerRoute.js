@@ -7,7 +7,7 @@ const talkerController = require('../controllers/talkerController');
 router
   .route('/')
   .get(talkerController.getAllTalkers)
-  .post(talkerController.createTalker);
+  .post(validation, talkerController.createTalker);
 
 router.route('/:id').get(talkerController.getTalker).put(validation, talkerController.updateTalker);
 

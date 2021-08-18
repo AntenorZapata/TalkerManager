@@ -1,5 +1,5 @@
 const speakersUtil = require('../utils/fs-utils');
-const VerifyLoginCredentials = require('../utils/verifyCredentials');
+const VerifyCredentials = require('../utils/verifyCredentials');
 
 const getAllTalkers = async (req, res) => {
   const speakers = await speakersUtil.readSpeakers();
@@ -22,20 +22,13 @@ const getTalker = async (req, res) => {
 };
 
 const createTalker = async (req, res) => {
-  const verify = new VerifyLoginCredentials(req, res);
   const { name, age, talk } = req.body;
-  const vToken = verify.verifyToken();
-  const vName = verify.verifyName();
-  const vAge = verify.verifyAge();
-  const vTalk = verify.verifyTalk();
   const speakers = await speakersUtil.readSpeakers();
   const len = speakers.length;
-
-  if (vToken && vName && vAge && vTalk) {
-    const response = { age, id: len + 1, name, talk };
-    await speakersUtil.writeSpeakers(response);
-    return res.status(201).json(response);
-  }
+  const response = { id: len + 1, age, name, talk };
+  const newArr = [...speakers, response];
+  await speakersUtil.writeSpeakers(newArr);
+  return res.status(201).json(response);
 };
 
 module.exports = {
