@@ -4,6 +4,8 @@ const validation = require('../services/validation');
 const router = express.Router();
 const talkerController = require('../controllers/talkerController');
 
+router.route('/search').get(talkerController.searchTalker);
+
 router
   .route('/')
   .get(talkerController.getAllTalkers)

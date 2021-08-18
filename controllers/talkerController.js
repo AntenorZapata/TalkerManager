@@ -54,10 +54,27 @@ const deleteTalker = async (req, res) => {
   }
 };
 
+const searchTalker = async (req, res) => {
+  const { q } = req.query;
+  const verify = new VerifyCredentials(req, res);
+  const vToken = verify.verifyToken();
+  const speakers = await speakersUtil.readSpeakers();
+
+  if (!q) {
+    return res.status(200).json(speakers);
+  }
+  const newArr = speakers.filter((item) => item.name.includes(q));
+
+  if (vToken) {
+  res.status(200).json(newArr);
+  }
+};
+
 module.exports = {
   getAllTalkers,
   getTalker,
   createTalker,
   updateTalker,
   deleteTalker,
+  searchTalker,
 };
