@@ -1,4 +1,4 @@
-class VerifyLoginCredentials {
+class VerifyCredentials {
   constructor(req, res) {
     this.req = req;
     this.res = res;
@@ -100,7 +100,7 @@ class VerifyLoginCredentials {
 
   verifyTalk() {
     const { talk } = this.req.body;
-    if (!talk || !talk.watchedAt || !talk.rate) {
+    if (!talk || !talk.watchedAt || (!talk.rate && talk.rate !== 0)) {
       this.res.status(400).json({
         message:
           'O campo "talk" é obrigatório e "watchedAt" e "rate" não podem ser vazios',
@@ -130,4 +130,4 @@ class VerifyLoginCredentials {
   }
 }
 
-module.exports = VerifyLoginCredentials;
+module.exports = VerifyCredentials;
