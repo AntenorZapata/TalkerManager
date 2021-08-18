@@ -31,8 +31,20 @@ const createTalker = async (req, res) => {
   return res.status(201).json(response);
 };
 
+const updateTalker = async (req, res) => {
+  const { name, age, talk } = req.body;
+  const { id } = req.params;
+  const speakers = await speakersUtil.readSpeakers();
+  const talker = speakers.find((item) => item.id === +id);
+  const response = { ...talker, age, name, talk };
+  const newArr = [...speakers, response];
+  await speakersUtil.writeSpeakers(newArr);
+  return res.status(200).json(response);
+};
+
 module.exports = {
   getAllTalkers,
   getTalker,
   createTalker,
+  updateTalker,
 };
