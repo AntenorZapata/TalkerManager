@@ -1,19 +1,44 @@
 const express = require('express');
-const validation = require('../services/validation');
+const {
+  verifyToken,
+  verifyName,
+  verifyAge,
+  verifyTalk,
+  verifyDateAndRate,
+} = require('../middleware/verifyCredentials');
 
 const router = express.Router();
-const talkerController = require('../controllers/talkerController');
+const {
+  getAllTalkers,
+  getTalker,
+  createTalker,
+  updateTalker,
+  deleteTalker,
+  searchTalker,
+} = require('../controllers/talkerController');
 
-router.route('/search').get(talkerController.searchTalker);
+router.route('/search').get(verifyToken, searchTalker);
 
 router
   .route('/')
-  .get(talkerController.getAllTalkers)
-  .post(validation, talkerController.createTalker);
+  .get(getAllTalkers)
+  .post(
+    verifyToken,
+    verifyName,
+    verifyAge,
+    verifyTalk,
+    verifyDateAndRate,
+    createTalker,
+  );
 
 router.route('/:id')
-.get(talkerController.getTalker)
-.put(validation, talkerController.updateTalker)
-.delete(talkerController.deleteTalker);
+.get(getTalker)
+.put(verifyToken,
+  verifyName,
+  verifyAge,
+  verifyTalk,
+  verifyDateAndRate,
+  updateTalker)
+.delete(verifyToken, deleteTalker);
 
 module.exports = router;
